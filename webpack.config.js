@@ -1,6 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+// const devMode = process.env.NODE_ENV !== 'production'
+const devMode = true;
 
 module.exports = {
     entry: ["./src/index.js"],
@@ -17,13 +20,14 @@ module.exports = {
             { test: /\.(js|jsx)$/,   loader: "babel-loader" },
             // Load SCSS
             {
-                test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader'],
-                    publicPath: '../'
-                })
-            }
+                test: /\.(sa|sc|c)ss$/,
+                use: [
+                  devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                  'css-loader',
+                  // 'postcss-loader',
+                  'sass-loader',
+                ],
+              }
         ]
     },
     plugins: [
@@ -33,6 +37,11 @@ module.exports = {
             template: "src/index.html",
             filename: "index.html"
         }),
-        new ExtractTextPlugin('css/style.css')
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: devMode ? '[name].css' : '[name].[hash].css',
+            chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+        })
     ]
 }
