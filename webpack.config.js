@@ -11,6 +11,11 @@ module.exports = {
         path: path.join(__dirname, "build/"),
         filename: "bundle.js"
     },
+    mode: 'development',
+    devServer: {
+        contentBase: 'build',
+        overlay:true
+    },
     module: {
         strictExportPresence: true,
         rules: [
