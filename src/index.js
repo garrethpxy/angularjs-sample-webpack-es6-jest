@@ -1,4 +1,6 @@
 import angular from "angular"
-import dummyComponent from "./dummy.component"
+import dummyComponent from "./components/dummy/dummy.component"
 
-angular.module("app", [dummyComponent])
+import './index.scss';
+
+angular.module("app", [dummyComponent]);

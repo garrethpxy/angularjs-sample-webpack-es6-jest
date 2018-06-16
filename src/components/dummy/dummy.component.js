@@ -7,7 +7,7 @@ class DummyController {
 
   /* @ngInject */
   constructor() {
-    this.name = "Sam123";
+    this.name = "Sam";
     this.isOn = false;
   }
 

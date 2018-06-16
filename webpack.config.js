@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require('webpack');
 
 // const devMode = process.env.NODE_ENV !== 'production'
 const devMode = true;
@@ -14,7 +15,8 @@ module.exports = {
     mode: 'development',
     devServer: {
         contentBase: 'build',
-        overlay:true
+        overlay:true,
+        hot: true
     },
     module: {
         strictExportPresence: true,
@@ -29,7 +31,7 @@ module.exports = {
                 use: [
                   devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
                   'css-loader',
-                  // 'postcss-loader',
+                  // 'postcss-loader', //TODO: decide if this is needed
                   'sass-loader',
                 ],
               }
@@ -47,6 +49,8 @@ module.exports = {
             // both options are optional
             filename: devMode ? '[name].css' : '[name].[hash].css',
             chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-        })
+        }),
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin()
     ]
 }
