@@ -1,6 +1,5 @@
 import angular from "angular"
 import template from "./dummy.html"
-
 import './dummy.component.scss'
 
 class DummyController {
