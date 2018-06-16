@@ -29,12 +29,26 @@ module.exports = {
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: [
-                  devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                  'css-loader',
-                  // 'postcss-loader', //TODO: decide if this is needed
-                  'sass-loader',
+                    // note: MiniCssExtractPlugin extracts inline styles into their own css stylesheet
+                    // later, it is automatically linked into the html index file by HtmlWebpackPlugin
+                    // we use MiniCssExtractPlugin only in production
+                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    // 'postcss-loader', //TODO: decide if this is needed
+                    'sass-loader',
                 ],
-              }
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'fonts/'
+                    }
+                }]
+            }
+
         ]
     },
     plugins: [

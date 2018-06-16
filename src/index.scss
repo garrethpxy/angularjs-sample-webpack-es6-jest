@@ -1,4 +1,17 @@
-// Global Styles
+/**
+ * Import Bootstrap 3.3.7
+ */
+$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/"; // point $icon-font-path to correct location
+@import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+/**
+ * Import FontAwesome
+ */
+@import "~font-awesome/css/font-awesome.css";
+
+/**
+ * Global App Styles
+ */
 body {
   background: #DDD;
 }

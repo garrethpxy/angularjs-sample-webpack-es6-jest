@@ -8,7 +8,9 @@
   "private": true,
   "dependencies": {
     "angular": "1.5.11",
+    "bootstrap-sass": "^3.3.7",
     "css-loader": "^0.28.11",
+    "font-awesome": "^4.7.0",
     "sass-loader": "^7.0.3",
     "sass-resources-loader": "^1.3.3",
     "style-loader": "^0.21.0"
