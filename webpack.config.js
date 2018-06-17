@@ -23,7 +23,8 @@ module.exports = {
     devServer: {
         contentBase: 'build',
         overlay:true,
-        hot: true
+        hot: true,
+        watchContentBase: true
     },
     module: {
         strictExportPresence: true,
