@@ -9,6 +9,9 @@ import DashboardRoutes from './pages/dashboard/dashboard.state';
 // Components
 import dummyComponent from "./components/dummy/dummy.component"
 
+// Config
+import IndexConfig from "./index.config";
+
 // SCSS
 import './components/scss/index.scss';
 
@@ -17,4 +20,5 @@ angular.module("app", [
     AppRoutes,
     dummyComponent,
     DashboardRoutes
-]);
+])
+.config(IndexConfig);

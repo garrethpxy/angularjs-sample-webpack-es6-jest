@@ -2,9 +2,16 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require('webpack');
+const ConcatPlugin = require('webpack-concat-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 // const devMode = process.env.NODE_ENV !== 'production'
 const devMode = true;
+
+const LEGACY_SRC_ROOT = './src/legacy';
+const LEGACY_OUTPUT_FOLDER = 'legacy-tpls'; // relative to contentBase folder
 
 module.exports = {
     entry: ["./src/index.js"],
@@ -48,6 +55,7 @@ module.exports = {
                     }
                 }]
             },
+            // Expose JQuery on the window object
             {
                 test: require.resolve('jquery'),
                 use: [{
@@ -61,6 +69,8 @@ module.exports = {
         ]
     },
     plugins: [
+        // Clean the build folder
+        new CleanWebpackPlugin(['build']),
         // Generates an `index.html` file with the <script> injected.
         new HtmlWebpackPlugin({
             inject: true,
@@ -73,7 +83,26 @@ module.exports = {
             filename: devMode ? '[name].css' : '[name].[hash].css',
             chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
         }),
+        // Enable Named Modules
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        // Enable HMR
+        new webpack.HotModuleReplacementPlugin(),
+        // Concat all legacy JS files. inserts into index.html automatically via HtmlWebPlugin
+        new ConcatPlugin({
+            filesToConcat: [`${LEGACY_SRC_ROOT}/**/*.js`],
+            injectType: 'append'
+        }),
+        // Copy all legacy tempate HTML files into predefined output folder
+        // Also watches for changes on the files and emits new files when changes are detected
+        new CopyWebpackPlugin([
+            {
+                from: `${LEGACY_SRC_ROOT}/**/*.html`,
+                to: `${LEGACY_OUTPUT_FOLDER}/`,
+                flatten: true
+            },
+        ]),
+        // Force webpack-dev-server to write to filesystem instead of serving from memory
+        // This is needed so that CopyWebpackPlugin will work as expected
+        new WriteFilePlugin()
     ]
 }
